@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block body %}
+
+        <!-- Page Header-->
+        <header class="masthead" style="background-image: url('{{url_for('static', filename='assets/img/home-bg.jpg')}}')">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7 nx-auto">
+                        <div class="site-heading">
+                            <h1>{{params['website']}}</h1>
+                            <span class="subheading">Heven for programmers</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Main Content-->
+        <article class="mb-4">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        Welcome to Ramans India Co. Ltd.
+                        We work to give you the best Quality of blogs which can help you in your daily life.
+                        {% for post in posts %}
+                        <hr class="my-4" />
+                        <div class="post-preview">
+                            <a href="/posts/{{post.slug}}">
+                                <h5 class="">
+                                    {{post.title}}
+                                </h5>
+                                <h6 class="post-subtitle">
+                                    {{post.tagline}}
+                                </h6>
+                            </a>
+                            <p class="post-meta">
+                                posted on {{module.strftime(post.date, "%B %d, %Y")}}
+                            </p>
+                        </div>
+                            
+                        <!-- Divider-->
+                        <hr class="my-4" />
+                        {% endfor %}
+                        <!-- Pager-->
+                        <div class="d-flex justify-content-end mb-4">
+                            <a class="btn btn-primary text-uppercase" href="/posts/old">
+                                Older Posts →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+        {% endblock %}
