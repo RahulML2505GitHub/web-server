@@ -1,0 +1,21 @@
+{
+    "params" :
+    {
+        "local_server" : true,
+        "local_uri" : "mysql://root:@localhost/ramans.com",
+        "prod_uri" : "mysql://root:@localhost/ramans.com",
+        "website" : "Ramans.com",
+        "tag_line" : "A Blog Theme by Start Bootstrap",
+        "country" : "India",
+        "about_text" : "",
+        "tw_url" : "https://twitter.com/ramans.com",
+        "fb_url" : "https://www.facebook.com/RahulML25/",
+        "gh_url" : "https://github.com/RahulML2505GitHub",
+        "num_posts" : 10
+    },
+    "authentication" :
+    {
+        "gmail-user" : "rahulml2505ytc@gmail.com",
+        "gmail-password" : "25rahulmlwin"
+    }
+}
