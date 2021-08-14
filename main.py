@@ -24,7 +24,7 @@ app.config.update(
     MAIL_PORT = '465',
     MAIL_USE_SSL = True,
     MAIL_USERNAME = authentication['gmail-user'],
-    MAIL_PASSWORD=  authentication['gmail-password']
+    MAIL_PASSWORD =  authentication['gmail-password']
 )
 
 mail = Mail(app)
@@ -56,9 +56,12 @@ class Posts(db.Model):
     img_file = db.Column(db.String(15), nullable=True)
 
 
+get_posts = lambda: Posts.query.filter_by().all()
+
+
 @app.route("/")
 def home():
-    posts = Posts.query.filter_by().all()
+    posts = get_posts()
     return render_template('index.html', title=params['website'],  params=params, posts=posts, module=datetime)
 
 @app.route("/about")
@@ -81,7 +84,7 @@ def contact():
 
         mail.send_message(f"Message by - {name}",
             sender=email,
-            recipients = [authentication['gmail-user']],
+            recipients = [authentication['gmail-user'], email],
             body = f"{message}\n\nPhone: {phone}"
         )
 
@@ -89,12 +92,12 @@ def contact():
 
 @app.route("/posts")
 def all_posts():
-    posts = Posts.query.filter_by().all()
+    posts = get_posts()
     return render_template('posts.html', title=f"{params['website']} - Top Posts", params=params, posts=posts, module=datetime)
 
 @app.route("/posts/old")
 def old_posts():
-    posts = Posts.query.filter_by().all()
+    posts = get_posts()
     return render_template('old_posts.html', title=f"{params['website']} - Old Posts", params=params, posts=posts, module=datetime)
 
 @app.route("/posts/<string:post_slug>", methods=["GET"])
