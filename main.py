@@ -1,18 +1,21 @@
 import json
+import webbrowser as wb
 from flask_mail import Mail
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
 
 
 with open('.config/config.json') as c:
     config = json.load(c)
     params = config['params']
-    authentication = config['authentication']
+    admin = config['admin']
+    authentication = admin['authentication']
     local_server = params['local_server']
 
 app = Flask(__name__)
 
+app.secret_key = 'go'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 if (local_server):
     app.config['SQLALCHEMY_DATABASE_URI'] = params['local_uri']
@@ -64,6 +67,24 @@ def home():
     posts = get_posts()
     return render_template('index.html', title=params['website'],  params=params, posts=posts, module=datetime)
 
+def dashboard_():
+    posts = Posts.query.all()
+    return render_template('dashboard.html', title=f"{params['website']} - Dashboard",  params=params, posts=posts, module=datetime)
+
+@app.route("/dashboard", methods = ["GET", "POST"])
+def dashboard():
+    if ('user' in session) and (session['user'] == admin['user-name']):
+        return dashboard_()
+
+    if request.method == "POST":
+        username = request.form.get("uname")
+        password = request.form.get("pass")
+        if (username == admin['user-name']) and (password == admin['password']):
+            session['user'] = username
+            return dashboard_()
+
+    return render_template('login.html', title=f"{params['website']} - Login",  params=params)
+
 @app.route("/about")
 def about():
     with open('.config/about.txt') as a:
@@ -101,7 +122,7 @@ def old_posts():
     return render_template('old_posts.html', title=f"{params['website']} - Old Posts", params=params, posts=posts, module=datetime)
 
 @app.route("/posts/<string:post_slug>", methods=["GET"])
-def posts_(post_slug):
+def post_(post_slug):
     post = Posts.query.filter_by(slug=post_slug).first()
     post.date = datetime.strftime(post.date, "%B %d, %Y")
     return render_template('post.html', title=post.title, params=params, post=post)

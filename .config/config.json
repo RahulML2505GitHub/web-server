@@ -13,9 +13,14 @@
         "gh_url" : "https://github.com/RahulML2505GitHub",
         "num_posts" : 10
     },
-    "authentication" :
+    "admin" :
     {
-        "gmail-user" : "rahulml2505ytc@gmail.com",
-        "gmail-password" : "25rahulmlwin"
+        "user-name": "rahulml2505",
+        "password": "pass",
+        "authentication":
+        {
+            "gmail-user" : "rahulml2505ytc@gmail.com",
+            "gmail-password" : "25rahulmlwin"
+        }
     }
 }
