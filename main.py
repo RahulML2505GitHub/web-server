@@ -1,5 +1,4 @@
 import json
-import webbrowser as wb
 from flask_mail import Mail
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
@@ -91,6 +90,24 @@ def about():
         params['about_text'] = a.read()
     return render_template('about.html', title=f"{params['website']} - About", params=params)
 
+@app.route("/edit/<string:sno>", methods=["GET", "POST"])
+def edit(sno):
+    if ('user' in session) and (session['user'] == admin['user-name']):
+        if (request.method=='POST'):
+            box_title = request.form.get('title')
+            tagline = request.form.get('tagline')
+            slug = request.form.get('slug')
+            content = request.form.get('content')
+            img_file = request.form.get('img_file')
+
+            if sno=="0":
+                post = Posts(title=box_title, tagline=tagline, slug=slug, content=content, img_file=img_file)
+                return post_(slug)
+        
+        elif(request.method=='GET'):
+            post = Posts(sno=sno)
+            return render_template("edit.html", params=params, post=post)
+
 @app.route("/contact", methods = ["GET", "POST"])
 def contact():
     if(request.method=='POST'):
@@ -108,7 +125,7 @@ def contact():
             recipients = [authentication['gmail-user'], email],
             body = f"{message}\n\nPhone: {phone}"
         )
-
+    
     return render_template('contact.html', title=f"{params['website']} - Contact", params=params)
 
 @app.route("/posts")

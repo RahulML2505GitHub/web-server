@@ -37,7 +37,7 @@
                                     <th scope="row">{{post.sno}}</th>
                                     <td>{{post.title}}</td>
                                     <td>{{module.strftime(post.date, "%d-%m, %Y")}}</td>
-                                    <td><button class="btn btn-primary text-uppercase" name="edit">Edit</button></td>
+                                    <td><a href="/edit/{{post.sno}}" method="post"><button class="btn btn-primary text-uppercase" name="edit">Edit</button></a></td>
                                     <td><button class="btn btn-primary text-uppercase" name="delete">Delete</button></td>
                                 </tr>
                             {% endfor %}
