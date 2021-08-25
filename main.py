@@ -1,3 +1,4 @@
+# Module Imports
 import os
 import json
 from flask_mail import Mail
@@ -8,6 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, render_template, request, session, redirect
 
 
+# Reading the config file
 with open('config/config.json') as c:
     config = json.load(c)
     params = config['params']
@@ -15,6 +17,7 @@ with open('config/config.json') as c:
     authentication = admin['authentication']
     local_server = params['local_server']
 
+# Configaring the app
 app = Flask(__name__)
 
 app.secret_key = 'go'
@@ -33,6 +36,7 @@ app.config.update(
     MAIL_PASSWORD =  authentication['gmail-password']
 )
 
+# Connecting with Mail-client and Database
 mail = Mail(app)
 db = SQLAlchemy(app)
 
@@ -83,7 +87,6 @@ class Contacts(db.Model):
 @app.route("/")
 def home():
     posts = get_posts()
-
     maximum_posts = int(params["num_posts"])
     last = ceil(len(posts)/maximum_posts)
     page = request.args.get("page")
@@ -108,6 +111,7 @@ def home():
         next = "/?page="+str(page+1)
     if page>last:
         return redirect(f"/?page={last}")
+
     return render_template('layout/home.html', title=params['website'],  params=params, posts=posts, prev=prev, next=next, module=datetime)
 
 @app.route("/about")
@@ -150,7 +154,7 @@ class Posts(db.Model):
     slug = db.Column(db.String(25), nullable=False)
     content = db.Column(db.String(250), nullable=False)
     date = db.Column(db.String(6), nullable=True)
-    img_file = db.Column(db.String(15), nullable=True)
+    img_file = db.Column(db.String(100), nullable=True)
 
 
 class EmpthyPost:
@@ -221,6 +225,8 @@ def edit(sno):
 
             else:
                 post = Posts.query.filter_by(sno=sno).first()
+                if post==None:
+                    return redirect("/dashboard")
                 post.title = box_title
                 post.tagline = tagline
                 post.slug = slug
