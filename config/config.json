@@ -11,7 +11,8 @@
         "tw_url" : "https://twitter.com/ramans.com",
         "fb_url" : "https://www.facebook.com/RahulML25/",
         "gh_url" : "https://github.com/RahulML2505GitHub",
-        "num_posts" : 10
+        "num_posts" : 2,
+        "upload_location": "C:\\Users\\RYZEN\\Documents\\Code\\GitHub\\Python\\Special\\web-server\\static\\assets\\img\\posts"
     },
     "admin" :
     {

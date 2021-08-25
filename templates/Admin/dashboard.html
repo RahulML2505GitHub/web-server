@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% block body %}
+
+        <!-- Page Header-->
+        <header class="masthead" style="background-image: url('{{url_for('static', filename='assets/img/Admin/admin.jpg')}}')">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7 nx-auto">
+                        <div class="site-heading">
+                            <h1>Admin Panal</h1>
+                            <span class="subheading">Manage or change your Posts</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Main Content-->
+        <article class="mb-4">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <h3>Basic Actions</h3>
+                        <a href="/edit/0" method="post"> <button class="btn btn-primary" style="padding: 14px;" name="new">Add a new post</button></a>
+                        <hr>
+                        <h5>Upload a file</h5>
+                        <form action="/uploader" enctype="multipart/form-data" method="post">
+                                <input type="file"  name="file">
+                                <a href="/uploader" method="post"></a><button class="btn btn-primary" style="padding: 14px;" type="submit">Submit</button>
+                                <div class="form-floating"><br></div>
+                        </form>
+                    </div>
+                    <hr>
+                    <h1>Edit Posts</h1>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                            <th scope="col">Sno.</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">date</th>
+                            <th scope="col">Edit</th>
+                            <th scope="col">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for post in posts %}
+                            <tr>
+                                <th scope="row">{{post.sno}}</th>
+                                <td>{{post.title}}</td>
+                                <td>{{module.strftime(post.date, "%d-%m, %Y")}}</td>
+                                <td><a href="/edit/{{post.sno}}" method="post"><button class="btn btn-primary text-uppercase" style="padding: 12px;" name="edit">Edit</button></a></td>
+                                <td><a href="/delete/{{post.sno}}" method="post"><button class="btn btn-primary text-uppercase" style="padding: 12px;" name="delete">Delete</button></a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <a href="/logout" method="post"><button class="btn btn-primary justify-content-end" style="padding: 14px;">Logout</button></a>
+                </div>
+            </div>
+        </article>
+        {% endblock %}

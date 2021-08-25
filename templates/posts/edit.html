@@ -2,7 +2,7 @@
 {% block body %}
 
         <!-- Page Header-->
-        <header class="masthead" style="background-image: url('{{url_for('static', filename='assets/img/admin.jpg')}}')">
+        <header class="masthead" style="background-image: url('{{url_for('static', filename='assets/img/archive/unimportaint-bg.jpg')}}')">
             <div class="container position-relative px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7 nx-auto">
@@ -20,33 +20,35 @@
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
                         <h1>Add/Edit Posts</h1>
-                        <form id="contactForm" action="/contact" method="post" novalidate data-sb-form-api-token="API_TOKEN">
+                        <form id="contactForm" action="/edit/{{sno}}" enctype="multipart/form-data" method="post" data-sb-form-api-token="API_TOKEN">
                             <div class="form-floating">
-                                <input class="form-control" id="title" name="title" type="text" placeholder="Enter the title..." data-sb-validations="required" />
+                                <input class="form-control" id="title" name="title" type="text" value="{{post.title}}" placeholder="Enter the title..." data-sb-validations="required" />
                                 <label for="name">Title</label>
                                 <div class="invalid-feedback" data-sb-feedback="name:required">A title is required.</div>
                             </div>
                             <div class="form-floating">
-                                <input class="form-control" id="tagline" name="tagline" type="text" placeholder="Enter your tagline..." data-sb-validations="required,tagline" />
+                                <input class="form-control" id="tagline" name="tagline" type="text" value="{{post.tagline}}" placeholder="Enter your tagline..." data-sb-validations="required,tagline" />
                                 <label for="email">Tagline</label>
                                 <div class="invalid-feedback" data-sb-feedback="tagline:required">An tagline is required.</div>
                                 <div class="invalid-feedback" data-sb-feedback="tagline:tagline">Tagline is not valid.</div>
                             </div>
                             <div class="form-floating">
-                                <input class="form-control" id="slug" name="slug" type="text" placeholder="Enter your slug..." data-sb-validations="required" />
-                                <label for="phone">Slug</label>
+                                <input class="form-control" id="slug" name="slug" type="text" value="{{post.slug}}" placeholder="Enter your slug..." data-sb-validations="required" />
+                                <label for="slug">Slug</label>
                                 <div class="invalid-feedback" data-sb-feedback="slug:required">A slug is required.</div>
                             </div>
                             <div class="form-floating">
-                                <textarea class="form-control" id="content" name="content" placeholder="Enter the content here..." style="height: 12rem" data-sb-validations="required"></textarea>
+                                <textarea class="form-control" id="content" name="content" placeholder="Enter the content here..." style="height: 12rem" data-sb-validations="required">{{post.content}}</textarea>
                                 <label for="message">Content</label>
                                 <div class="invalid-feedback" data-sb-feedback="message:required">The content is required.</div>
                             </div>
-                            <div class="form-floating">
-                                <input class="form-control" id="img_file" name="img_file" type="text" placeholder="Enter image..." data-sb-validations="required" />
-                                <label for="phone">Image File</label>
-                                <div class="invalid-feedback" data-sb-feedback="Image:required">A Image file is required.</div>
-                            </div>
+                            <div class="form-floating"><br></div>
+                            {% set img_file = 'assets/img/posts/' + post.img_file %}
+                            <img class="img-fluid" src="{{url_for('static', filename=img_file)}}" alt="...">
+                            <input class="form-control" id="old_file" name="old_file" type="text" value="{{post.img_file}}" placeholder="input image file..." data-sb-validations="required" />
+                            <div class="form-floating"><br></div>
+                            <input type="file" name="file">
+                            <hr class="my-4" />
                             <br />
                             <!-- Submit success message-->
                             <!---->
@@ -65,8 +67,9 @@
                             <!-- This is what your users will see when there is-->
                             <!-- an error submitting the form-->
                             <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
+                            <a href="/dashboard" method="post"> <button class="btn btn-primary" name="new">Go Dashboard</button></a>
                             <!-- Submit Button-->
-                            <button class="btn btn-primary text-uppercase justify-content-end" id="submitButton" type="submit">Send</button>
+                            <button class="btn btn-primary text-uppercase" id="submitButton" type="submit">Submit</button>
                         </form>
                     </div>
                 </div>
