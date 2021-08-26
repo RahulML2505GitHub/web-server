@@ -29,7 +29,17 @@
             <div class="container px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7 nx-auto">
-                        <p>{{post.content}}</p>
+                        {% for parra in post.content %}
+                            {% if '<h2>' in parra %}
+                                <h2>{{parra.replace('<h2>', '')}}</h2>
+                            {% elif 'img class=img-fluid src=' in parra %}
+                                <img class="img-fluid" src="{{ url_for('static', filename='assets/img/posts/'+parra[24:])}}" alt="...">
+                            {% elif 'span class=caption text-muted ' in parra %}
+                                <span class="caption text-muted">{{parra}}</span>
+                            {% else %}
+                            <p>{{parra}}</p>
+                            {% endif %}
+                        {% endfor %}
                     </div>
                 </div>
             </div>

@@ -40,8 +40,14 @@
                         <hr class="my-4" />
                         <!-- Pager-->
                         <div class="d-fix justyfy-content-end my-4">
+                            <!-- Previous -->
+                            {% if not (prev == '/#') %}
                             <a class="btn btn-primary float-left" href="{{prev}}">&larr; Previous</a>
+                            {% endif %}
+                            <!-- Next -->
+                            {% if not (next == '/#') %}
                             <a class="btn btn-primary float-right" href="{{next}}">Next &rarr;</a>
+                            {% endif %}
                         </div>
                     <!-- Divider-->
                     </div>
