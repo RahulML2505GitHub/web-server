@@ -20,7 +20,7 @@
         "password": "pass",
         "authentication":
         {
-            "gmail-user" : "rahulml2505ytc@gmail.com",
+            "gmail-user" : "your_email@gmail.com",
             "gmail-password" : "your_pass"
         }
     }
