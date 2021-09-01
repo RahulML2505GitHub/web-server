@@ -161,11 +161,40 @@ class Posts(db.Model):
 @app.route("/posts")
 def all_posts():
     posts = get_posts()
-    return render_template('posts/posts.html', title=f"{params['website']} - Top Posts", params=params, posts=posts, module=datetime)
+    maximum_posts = 30
+    last = ceil(len(posts)/maximum_posts)
+    page = request.args.get("page")
+
+    if not str(page).isnumeric():
+        page = 1
+    else:
+        page = int(page)
+
+    start = (page-1)*maximum_posts
+    posts = posts[start:start+maximum_posts]
+
+    # Pagination logic
+    if page == 1:
+        prev = "#"
+        next = "?page="+str(page+1)
+    elif page == last:
+        prev = "?page="+str(page-1)
+        next = "#"
+    else:
+        prev = "?page="+str(page-1)
+        next = "?page="+str(page+1)
+    if (page>last):
+        return redirect(f"/posts")
+    if len(posts)<maximum_posts:
+        next = "#"
+
+    return render_template('posts/posts.html', title=f"{params['website']} - Top Posts", params=params, posts=posts, prev=prev, next=next, module=datetime)
 
 @app.route("/posts/<string:post_slug>", methods=["GET"])
 def post_(post_slug):
     post = Posts.query.filter_by(slug=post_slug).first()
+    if post==None:
+        return redirect("/")
     post.date = datetime.strftime(post.date, "%B %d, %Y")
     post.content = str(post.content).split("\r\n")
     while '' in post.content: post.content.remove('')

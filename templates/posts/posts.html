@@ -19,34 +19,57 @@
       <div class="container px-4 px-lg-5">
           <div class="row gx-4 gx-lg-5 justify-content-center">
               <div class="col-md-10 col-lg-8 col-xl-7">
-                  <!-- Post preview-->
-                  {% for post in posts %}
-                  <div class="post-preview">
-                      <a href="/posts/{{post.slug}}">
-                          <h2 class="post-title">
-                              {{post.title}}
-                          </h2>
-                          <h3 class="post-subtitle">
-                              {{post.tagline}}
-                          </h3>
-                      </a>
-                      {{post.content[:150]}}...
-                      <p class="post-meta">
-                          posted by
-                          <a href="/">{{params['website']}}</a>
-                          on {{module.strftime(post.date, "%B %d, %Y")}}
-                      </p>
-                  </div>
-                      
-                  <!-- Divider-->
-                  <hr class="my-4" />
-                  {% endfor %}
-                                 
+                    <!-- Post preview-->
+                    <div class="post-preview">
+                        <a href="/posts/{{posts[0].slug}}">
+                            <h2 class="post-title">
+                                {{posts[0].title}}
+                            </h2>
+                            <h3 class="post-subtitle">
+                                {{posts[0].tagline}}
+                            </h3>
+                        </a>
+                        {{posts[0].content[:150]}}...
+                        <p class="post-meta">
+                            posted by
+                            <a href="/">{{params['website']}}</a>
+                            on {{module.strftime(posts[0].date, "%B %d, %Y")}}
+                        </p>
+                    </div>
+                    {% for post in posts[1:] %}
+                    <!-- Divider-->
+                    <hr class="my-4" />
+                    <div class="post-preview">
+                        <a href="/posts/{{post.slug}}">
+                            <h2 class="post-title">
+                                {{post.title}}
+                            </h2>
+                            <h3 class="post-subtitle">
+                                {{post.tagline}}
+                            </h3>
+                        </a>
+                        {{post.content[:150]}}...
+                        <p class="post-meta">
+                            posted by
+                            <a href="/">{{params['website']}}</a>
+                            on {{module.strftime(post.date, "%B %d, %Y")}}
+                        </p>
+                    </div>
+                    {% endfor %}
+                    {% if not (prev == next) %}
+                    <!-- Divider-->
+                    <hr class="my-4" />
+                    {% endif %}     
                     <!-- Pager-->
                     <div class="mb-4">
-                        <a href="/posts/previous"> <button class="btn btn-primary" name="previous">← Previous Posts</button></a>
-
-                        <a href="/posts/next"> <button class="btn btn-primary" name="next">Next Posts →</button></a>
+                        <!-- Previous -->
+                        {% if not (prev == '#') %}
+                        <a class="btn btn-primary float-left" href="{{prev}}">&larr; Previous</a>
+                        {% endif %}
+                        <!-- Next -->
+                        {% if not (next == '#') %}
+                        <a class="btn btn-primary float-right" href="{{next}}">Next &rarr;</a>
+                        {% endif %}
                     </div>
               </div>
           </div>
